@@ -1,0 +1,29 @@
+### GET /api/todos - 取得所有待辦事項
+GET http://localhost:3000/api/todos
+
+### GET /api/todos/:id - 取得單一待辦事項
+GET http://localhost:3000/api/todos/2
+
+### POST /api/todos - 建立一個新的待辦事項
+POST http://localhost:3000/api/todos
+Content-Type: application/json
+
+{
+  "title": "使用 REST Client 測試 API",
+  "completed": false
+}
+
+### PUT /api/todos/:id - 更新一個待辦事項
+PUT http://localhost:3000/api/todos/1
+Content-Type: application/json
+
+{
+  "title": "使用 REST Client 測試 API",
+  "completed": true
+}
+
+### DELETE /api/todos/:id - 刪除一個待辦事項
+DELETE http://localhost:3000/api/todos/2
+
+### GET /api/auth
+GET http://localhost:3000/api/auth/

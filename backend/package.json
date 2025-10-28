@@ -1,0 +1,24 @@
+{
+  "name": "js-backend",
+  "version": "1.0.0",
+  "description": "* WEB-04-01 互動式動態網頁（後端）\r ## 專案內容\r * 專案方向\r 製作一個排班網站。\r * 主要專案內容:\r     1. 使用者功能：\r         * 使用者登入與登出功能，包含 OAuth 註冊與登入\r         * 日期排班功能(選擇可上班日期)\r         * 歷史查詢\r         * 班表查詢\r     2. 後台管理功能\r         * 使用者管理\r         * 新增排班日期區間(可限制可排班日期)\r         * 排班功能(依照相關限制排班，ex: 勞基法...)\r     3. 部署專案至任一雲端服務\r * 預期使用技術:\r     * Backend：\r         1. Express: 後端框架\r         2. Passport: 帳號權限管理/登入登出/加密 + JWT + Oauth 串接\r         3. sequelize: 資料庫（ORM）\r         4. node-redis: 資料庫（Redis）\r         5. AdminBro: 簡易前端畫面 (額外)\r     * DataBase：PostgreSQL\r     * Deploy：\r         1. AWS: 雲端部屬\r         2. testing: github CI/CD + mock\r     * Document: swagger\r * 預期成果\r     1. 開發出符合業界標準、RESTful API 的後端網站架構。\r     2. 掌握如何整合 Express 與相關套件\r     3. 可通過 CI/CD 測試。\r     4. 能部署專案至雲服務",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src\\server.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-line-auth": "^0.2.9",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

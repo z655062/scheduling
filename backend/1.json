@@ -1,0 +1,13 @@
+{
+    "web": {
+        "client_id": "714526822821-v92legl2mokolrejkso5gg08jg3o2h5c.apps.googleusercontent.com",
+        "project_id": "for-passport",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://localhost:3000/auth/google/callback"
+        ]
+    }
+}
