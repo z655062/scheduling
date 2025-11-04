@@ -1,0 +1,62 @@
+version: '3.8'
+
+networks:
+  default:
+    name: none
+    external: true
+  # local_net:
+  #   external: true
+  local_net:
+    name: local_net
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.100.0/24
+
+services:
+  local-redis:
+    image: redis:latest
+    restart: always
+    container_name: local-redis
+    networks:
+      local_net:
+        ipv4_address: 192.168.100.8
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+    command: [ redis-server, --save, "", --appendonly, "no", --requirepass, "redis@" ]
+
+  local-db:
+    image: postgres:17-alpine
+    container_name: local-db
+    networks:
+      local_net:
+        ipv4_address: 192.168.100.9
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_user_secret
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password_secret
+
+    secrets:
+      - db_user_secret
+      - db_password_secret
+
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
+
+
+secrets:
+  # 頂層 secrets 定義區塊
+  db_user_secret:
+    # 指定主機上秘密檔案的路徑
+    file: ./postgres_usr
+  db_password_secret:
+    # 指定主機上秘密檔案的路徑
+    file: ./postgres_pw

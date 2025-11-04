@@ -1,10 +1,10 @@
 import express from "express";
 import auth from "./routes/auth.mjs"
-import todoRoutes from "./routes/todoRoutes.mjs";
+import user from "./routes/user.mjs";
 // server.js
 // const express = require('express');
 const app = express();
-const PORT = 3000;
+const PORT = 3001;
 
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
@@ -21,12 +21,11 @@ let todos = [
 
 // 根路由，用於測試伺服器是否正常運作
 app.get('/', (req, res) => {
-  res.send('Welcome to the Todo API!');
+  res.send('Hellow World!');
 });
 
-// 引入 todos 路由
-app.use('/api/todos', todoRoutes);
 app.use('/api/auth', auth);
+app.use('/api/user', user);
 
 // 啟動伺服器
 app.listen(PORT, () => {

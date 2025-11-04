@@ -1,29 +1,32 @@
-### GET /api/todos - 取得所有待辦事項
-GET http://localhost:3000/api/todos
+# Vscode 安裝 REST Client
 
-### GET /api/todos/:id - 取得單一待辦事項
-GET http://localhost:3000/api/todos/2
+### GET /api/user - 取得所有使用者
+GET http://localhost:3001/api/user
 
-### POST /api/todos - 建立一個新的待辦事項
-POST http://localhost:3000/api/todos
+### GET /api/user/:id - 取得單一使用者
+GET http://localhost:3001/api/user/1
+
+### POST /api/user - 建立一個新的使用者
+POST http://localhost:3001/api/user
 Content-Type: application/json
 
 {
-  "title": "使用 REST Client 測試 API",
-  "completed": false
+  "username": "使用者",
+  "is_active": true,
+  "role": "normal"
 }
 
-### PUT /api/todos/:id - 更新一個待辦事項
-PUT http://localhost:3000/api/todos/1
+### PUT /api/user/:id - 更新一個使用者
+PUT http://localhost:3001/api/user/1
 Content-Type: application/json
 
 {
-  "title": "使用 REST Client 測試 API",
-  "completed": true
+  "username": "更新使用者",
+  "role": "admin"
 }
 
-### DELETE /api/todos/:id - 刪除一個待辦事項
-DELETE http://localhost:3000/api/todos/2
+### DELETE /api/user/:id - 刪除一個使用者
+DELETE http://localhost:3001/api/user/2
 
 ### GET /api/auth
-GET http://localhost:3000/api/auth/
+GET http://localhost:3001/api/auth/
