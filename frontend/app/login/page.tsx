@@ -1,3 +1,4 @@
+import { RegisterButton } from "@/components/Button";
 import Link from "next/link";
 
 export default () => {
@@ -27,9 +28,9 @@ export default () => {
 
                     <div style={{ height: "100%", borderColor: "deepskyblue", rowGap: "1rem" }} className="flex flex-col items-center container border-2 rounded p-8">
 
-                        <button className="border border-grey-400 w-full sm:w-1/2" type="submit" formAction={handleGoogleLogin}> 使用 Google 登入 </button>
-                        <button className="border border-grey-400 w-full sm:w-1/2" type="submit" formAction={handleLineLogin}> 使用 Line 登入 </button>
-                        <Link className="text-center border border-grey-400 w-full sm:w-1/2" href={"/register"}>註冊</Link>
+                        <RegisterButton type="google" action={handleGoogleLogin} label="登入" />
+                        <RegisterButton type="line" action={handleLineLogin} label="登入" />
+                        <Link className="flex justify-center border border-grey-400 w-full sm:w-1/2 p-2" href={"/register"}>註冊</Link>
                     </div>
                 </form>
             </main>
