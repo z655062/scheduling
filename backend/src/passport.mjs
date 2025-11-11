@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
@@ -7,12 +8,13 @@ import lineAuth from "passport-line-auth";
 import db from "../models/index.js";
 const { User } = db;
 import AuthService from "./services/auth.mjs";
+import UserService from "./services/user.mjs";
 
 const GoogleStrategy = googleAuth.Strategy;
 const LineStrategy = lineAuth.Strategy;
 
-const JWT_SECRET = process.env.JWT_SECRET || "YOUR_SUPER_SECURE_SECRET";
-
+const JWT_SECRET = process.env.JWT_SECRET;
+const HOST = process.env.HOST;
 export default function initializePassport(app) {
     // 1. 本地登入策略 (Local Strategy)
     passport.use(new LocalStrategy({
@@ -52,29 +54,44 @@ export default function initializePassport(app) {
 
     // 3. Google 策略 (Google Oauth)
     passport.use(new GoogleStrategy({
-        // clientID: "714526822821-v92legl2mokolrejkso5gg08jg3o2h5c.apps.googleusercontent.com",
-        clientID: "714526822821-9ga0k0dauj3pi3gkunqff49su26ptm3j.apps.googleusercontent.com",
-        // clientSecret: "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",
-        clientSecret: "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",
-        callbackURL: "https://2c54d2268c6f.ngrok-free.app/api/auth/google/callback"
+        clientID: "714526822821-v92legl2mokolrejkso5gg08jg3o2h5c.apps.googleusercontent.com",
+        clientSecret: "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",
+        callbackURL: `${HOST}/api/auth/google/callback`
     },
-        (accessToken, refreshToken, profile, cb) => {
-            return cb("test err", profile);
+        async (accessToken, refreshToken, profile, cb) => {
+            try {
+                // console.log(accessToken, refreshToken, profile)
+                console.log("==========================")
+                const { id } = profile;
+                const { sub, name, given_name, family_name, picture, email, email_verified } = profile._json;
+                const user = await UserService.findOrCreateOauthUser(profile);
+                return cb(null, user);
+            } catch (err) {
+                return done(err, false);
+            }
         }
     ));
 
-    // 4. Google 策略 (Line Oauth)
+    // 4. Line 策略 (Line Oauth)
     passport.use(new LineStrategy({
         channelID: "2008308071",
         channelSecret: "87577f8a7e74a1216438197c8b957cf9",
-        callbackURL: "https://2c54d2268c6f.ngrok-free.app/api/auth/line/callback",
+        callbackURL: `${HOST}/api/auth/line/callback`,
         scope: ["profile", "openid", "email"],
         botPrompt: "normal",
         uiLocales: "zh-tw",
     },
-        function (accessToken, refreshToken, profile, cb) {
-            console.log(accessToken, refreshToken, profile)
-            return cb("line", profile);
+        async (accessToken, refreshToken, profile, cb) => {
+            try {
+                // console.log(accessToken, refreshToken, profile)
+                console.log("==========================")
+                const { provider, id, displayName, pictureUrl, _raw } = profile;
+                const user = await UserService.findOrCreateOauthUser(profile);
+
+                return cb(null, user);
+            } catch (err) {
+                return done(err, false);
+            }
         }
     ));
 

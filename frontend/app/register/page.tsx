@@ -1,8 +1,5 @@
+import "dotenv/config";
 import { RegisterButton } from "@/components/Button";
-import Link from "next/link";
-
-
-
 
 export default () => {
     async function handleLineRegister(formData: FormData) {

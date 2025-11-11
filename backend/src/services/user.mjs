@@ -73,6 +73,29 @@ class UserService {
         });
         return deletedRowCount;
     }
+
+    // ----------------------------------------------------
+    // D: 刪除使用者 (DELETE /:id)
+    // ----------------------------------------------------
+    static async findOrCreateOauthUser(data) {
+        const { id, provider, displayName } = data;
+        const user = await User.findOne({ where: { oauth_id: id, oauth_type: provider } });
+
+        if (user !== null) {
+            return user;
+        }
+        else {
+            const userData = {
+                username: displayName,
+                oauth_id: id,
+                oauth_type: provider,
+                type: "normal",
+                is_active: true
+            }
+            const newUser = await await User.create(userData);
+            return newUser
+        }
+    }
 }
 
 export default UserService;

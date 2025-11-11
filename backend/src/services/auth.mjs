@@ -1,10 +1,11 @@
+import 'dotenv/config';
 import jwt from "jsonwebtoken";
 import db from "../../models/index.js";
 const { User } = db;
 
 class AuthService {
-    JWT_SECRET = process.env.JWT_SECRET;
-    JWT_EXPIRY = "7d";
+    static JWT_SECRET = process.env.JWT_SECRET;
+    static JWT_EXPIRY = "7d";
 
     // ----------------------------------------------------
     // 生成 JWT Token

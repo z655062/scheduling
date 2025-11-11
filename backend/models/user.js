@@ -45,7 +45,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     oauth_type: {
       type: DataTypes.ENUM("google", "line"),
-    }
+    },
+    oauth_id: DataTypes.STRING,
   }, {
     sequelize,
     tableName: "Users",

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 const ButtonType = {
     "line": {
         src: "line.svg",
@@ -23,15 +24,16 @@ export const RegisterButton = (props: RegisterButtonProp) => {
     const buttonInfo = ButtonType[type];
 
     return (
-        <button
+        <Link
             style={{ columnGap: ".5rem", userSelect: "none" }}
             className="flex justify-center border border-grey-400 w-full sm:w-1/2 p-2"
             type="submit"
-            formAction={action}
+            // formAction={action}
+            href={`${process.env.HOST}/api/auth/${type}`}
         >
             {`使用`}
             <Image src={buttonInfo.src} alt={`${buttonInfo.label} ${label}`} width={size} height={size} />
             {`${buttonInfo.label} ${label}`}
-        </button>
+        </Link>
     )
 }

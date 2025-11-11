@@ -34,7 +34,7 @@ DELETE {{baseUrl}}/user/2
 
 
 
-### GET /api/login - 登入
+### POST /api/login - 登入
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
 

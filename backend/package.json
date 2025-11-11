@@ -16,6 +16,7 @@
   "dependencies": {
     "@sequelize/postgres": "^7.0.0-alpha.47",
     "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
     "jsonwebtoken": "^9.0.2",

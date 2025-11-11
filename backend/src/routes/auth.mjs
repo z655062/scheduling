@@ -1,41 +1,35 @@
+import 'dotenv/config';
 import express from "express";
 import passport from "passport";
 
 import expressSession from "express-session";
+import AuthService from "../services/auth.mjs";
 
 
 const router = express.Router();
 router.use(expressSession({ secret: "keyboard dog", resave: true, saveUninitialized: true }));
 
 //#region Oauth
+const redirectFrontend = async (req, res) => {
+    const user = req.user;
+    const token = await AuthService.generateToken(user);
+    const frontendSuccessUrl = `${process.env.FRONTEND_BASE_URL}/auth/callback?token=${token}`;
+    res.cookie("jwt", token, { httpOnly: true, secure: true, maxAge: "3600000" })
+    // res.redirect(process.env.FRONTEND_BASE_URL);
+    res.redirect(frontendSuccessUrl);
+};
+
 router.get("/google", passport.authenticate("google", {
     scope: ["email", "profile", "openid"],
 }));
 
-
-router.get("/google/callback", passport.authenticate("google", { session: false }), (req, res) => {
-    console.log(req, res)
-    res.send({
-        status: true,
-        data: {
-            id: req.user.id,
-            name: req.user.displayName
-        }
-    });
-})
+router.get("/google/callback", passport.authenticate("google", { session: false, failureRedirect: '/login' }), redirectFrontend)
 
 router.get("/line", passport.authenticate("line"));
 
-router.get("/line/callback", passport.authenticate("line", { session: false }), (req, res) => {
-    console.log(req, res)
-    res.send({
-        status: true,
-        data: {
-            id: req.user.id,
-            name: req.user.displayName
-        }
-    });
-})
+// router.get("/line/callback", passport.authenticate("line", { session: false, failureRedirect: '/login', successRedirect: '/' }), (req, res) => {
+router.get("/line/callback", passport.authenticate("line", { session: false, failureRedirect: '/login' }), redirectFrontend);
+
 //#endregion
 
 //#region local strategy
