@@ -1,4 +1,5 @@
 import express from "express";
+import passport from "passport";
 import db from "../../models/index.js";
 const { User } = db;
 import UserService from "../services/user.mjs";
@@ -18,6 +19,31 @@ router.get("/", async (req, res) => {
         });
     }
 });
+
+router.get("/me",
+    passport.authenticate("jwt", { session: false }),
+    async (req, res) => {
+        try {
+            const userId = req.user.id;
+
+            const userProfile = await UserService.getUserById(userId);
+
+            if (!userProfile) {
+                return res.status(404).json({
+                    message: "找不到使用者資料。"
+                });
+            }
+
+            // I/O 處理：回傳使用者公開資訊
+            return res.status(200).json(userProfile);
+        } catch (error) {
+            console.error("Error fetching user profile:", error);
+            return res.status(500).json({
+                message: "伺服器內部錯誤"
+            });
+        }
+    }
+);
 
 router.get("/:id", async (req, res) => {
     const { id } = req.params;
@@ -81,6 +107,7 @@ router.delete("/:id", async (req, res) => {
         return res.status(500).json({ error: "無法刪除使用者" });
     }
 });
+
 
 // module.exports = router;
 export default router;

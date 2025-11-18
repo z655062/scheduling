@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "set NEXT_RUNTIME_LOG=1 && next dev",
+    "dev": "set NEXT_RUNTIME_LOG=1 && next dev -p 1743",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

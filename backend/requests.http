@@ -1,5 +1,5 @@
 # Vscode 安裝 REST Client
-@baseUrl = http://localhost:3001/api
+@baseUrl = http://localhost:1746/api
 # @token = {{auth_token}}
 
 ### GET /api/user - 取得所有使用者
@@ -24,7 +24,7 @@ PUT {{baseUrl}}/user/1
 Content-Type: application/json
 
 {
-  "username": "更新使用者",
+  "username": "admin",
   "role": "admin",
   "password": "admin"
 }

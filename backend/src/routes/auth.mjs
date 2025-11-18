@@ -50,8 +50,14 @@ router.post("/login", (req, res, next) => {
             }
 
             // 成功登入，生成 JWT Token
-            const token = await authService.generateToken(user);
+            const token = await AuthService.generateToken(user);
 
+            // res.cookie('access_token', token, {
+            //     httpOnly: true, // 防止瀏覽器 JavaScript 存取
+            //     secure: process.env.NODE_ENV === 'production', // 僅在 HTTPS 下發送
+            //     maxAge: 24 * 60 * 60 * 1000, // 例如 1 天
+            //     sameSite: 'Lax', // 緩解 CSRF 攻擊
+            // });
             // 返回 Token 給客戶端 (RESTful API 標準做法)
             return res.json({
                 message: "登入成功",
