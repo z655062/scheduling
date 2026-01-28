@@ -13,13 +13,14 @@ const ButtonType = {
 
 interface RegisterButtonProp {
     type: "line" | "google";
-    action: string | ((formData: FormData) => void | Promise<void>) | undefined;
+    // action: string | ((formData: FormData) => void | Promise<void>) | undefined;
     size?: number | `${number}`;
     label: "註冊" | "登入";
 }
 
 export const RegisterButton = (props: RegisterButtonProp) => {
-    const { type, action, size = 20, label } = props;
+    // const { type, action, size = 20, label } = props;
+    const { type, size = 20, label } = props;
     if (!["google", "line"].includes(type)) return
     const buttonInfo = ButtonType[type];
 

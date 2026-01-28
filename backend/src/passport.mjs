@@ -33,8 +33,19 @@ export default function initializePassport(app) {
     }));
 
     // 2. JWT 策略 (用於驗證受保護的路由)
+    // const cookieExtractor = (req) => {
+    //     console.log("🚀 ~ cookieExtractor ~ req:", req)
+    //     let token = null;
+    //     if (req && req.cookies) {
+    //         console.log(req.cookies)
+    //         // 假設您將 JWT 儲存在名為 'jwt' 的 Cookie 中
+    //         token = req.cookies['jwt'];
+    //     }
+    //     return token;
+    // };
+
     const jwtOptions = {
-        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // 從 Header 的 Bearer Token 獲取
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: JWT_SECRET,
     };
 
@@ -54,14 +65,13 @@ export default function initializePassport(app) {
 
     // 3. Google 策略 (Google Oauth)
     passport.use(new GoogleStrategy({
-        clientID: "714526822821-v92legl2mokolrejkso5gg08jg3o2h5c.apps.googleusercontent.com",
-        clientSecret: "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",
+        clientID: process.env.GOOGLE_ID,
+        clientSecret: process.env.GOOGLE_SECRET,
         callbackURL: `${HOST}/api/auth/google/callback`
     },
         async (accessToken, refreshToken, profile, cb) => {
             try {
                 // console.log(accessToken, refreshToken, profile)
-                console.log("==========================")
                 const { id } = profile;
                 const { sub, name, given_name, family_name, picture, email, email_verified } = profile._json;
                 const user = await UserService.findOrCreateOauthUser(profile);
@@ -74,8 +84,8 @@ export default function initializePassport(app) {
 
     // 4. Line 策略 (Line Oauth)
     passport.use(new LineStrategy({
-        channelID: "2008308071",
-        channelSecret: "87577f8a7e74a1216438197c8b957cf9",
+        channelID: process.env.LINE_ID,
+        channelSecret: process.env.LINE_SECRET,
         callbackURL: `${HOST}/api/auth/line/callback`,
         scope: ["profile", "openid", "email"],
         botPrompt: "normal",
@@ -84,7 +94,6 @@ export default function initializePassport(app) {
         async (accessToken, refreshToken, profile, cb) => {
             try {
                 // console.log(accessToken, refreshToken, profile)
-                console.log("==========================")
                 const { provider, id, displayName, pictureUrl, _raw } = profile;
                 const user = await UserService.findOrCreateOauthUser(profile);
 

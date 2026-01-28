@@ -6,19 +6,6 @@ import { cookies } from "next/headers";
 import { redirect } from 'next/navigation';
 
 const Login = () => {
-    async function handleLineLogin(formData: FormData) {
-        "use server";
-        const name = formData.get("name");
-        console.log("來自伺服端的處理：", name);
-    }
-
-    async function handleGoogleLogin(formData: FormData) {
-        "use server";
-        const name = formData.get("name");
-        console.log("來自伺服端的處理：", name);
-
-    }
-
     async function handleLogin(formData: FormData) {
         "use server";
         const username = formData.get("username");
@@ -46,8 +33,8 @@ const Login = () => {
         (await cookies()).set("t", result.token, {
             httpOnly: true,
             sameSite: "none",
-            secure: true,
-            maxAge: 60 * 15,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 60 * 60 * 24, // 1 day
             path: '/',
         })
 
@@ -65,8 +52,8 @@ const Login = () => {
                         <Input required name="username" type="text" placeholder="帳號" />
                         <Input required name="password" type="password" placeholder="密碼" />
                         <button className="flex justify-center border w-full sm:w-1/2 p-2" style={{ backgroundColor: "black", color: "white" }} formAction={handleLogin}>登入</button>
-                        <RegisterButton type="google" action={handleGoogleLogin} label="登入" />
-                        <RegisterButton type="line" action={handleLineLogin} label="登入" />
+                        <RegisterButton type="google" label="登入" />
+                        <RegisterButton type="line" label="登入" />
                         <Link className="flex justify-center border border-grey-400 w-full sm:w-1/2 p-2" href={"/register"}>註冊</Link>
                     </div>
                 </form>
