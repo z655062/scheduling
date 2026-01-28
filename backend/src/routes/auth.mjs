@@ -50,7 +50,7 @@ router.post("/login", (req, res, next) => {
             }
 
             // 成功登入，生成 JWT Token
-            const token = await authService.generateToken(user);
+            const token = await AuthService.generateToken(user);
 
             // 返回 Token 給客戶端 (RESTful API 標準做法)
             return res.json({

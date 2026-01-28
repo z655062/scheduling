@@ -1,7 +1,11 @@
 import { RegisterButton } from "@/components/Button";
+import { Input } from "@/components/Input";
 import Link from "next/link";
+import "dotenv/config";
+import { cookies } from "next/headers";
+import { redirect } from 'next/navigation';
 
-export default () => {
+const Login = () => {
     async function handleLineLogin(formData: FormData) {
         "use server";
         const name = formData.get("name");
@@ -12,12 +16,43 @@ export default () => {
         "use server";
         const name = formData.get("name");
         console.log("來自伺服端的處理：", name);
+
     }
 
-    async function handleRegistry(formData: FormData) {
+    async function handleLogin(formData: FormData) {
         "use server";
-        const name = formData.get("name");
-        console.log("來自伺服端的處理：", name);
+        const username = formData.get("username");
+        const password = formData.get("password");
+
+        const data = JSON.stringify({
+            username, password
+        });
+
+        const res = fetch(`${process.env.BACKEND_BASE_URL}/api/auth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: data
+        }).then(res => {
+            return res.json()
+        })
+
+        const result = await res;
+        console.log("🚀 ~ handleLogin ~ result:", result.token);
+
+        if (result?.token === undefined) return;
+
+        (await cookies()).set("t", result.token, {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+            maxAge: 60 * 15,
+            path: '/',
+        })
+
+        redirect("/welcome");
+
     }
 
     return (
@@ -27,7 +62,9 @@ export default () => {
                     <h1 className="">歡迎登入</h1>
 
                     <div style={{ height: "100%", borderColor: "deepskyblue", rowGap: "1rem" }} className="flex flex-col items-center container border-2 rounded p-8">
-
+                        <Input required name="username" type="text" placeholder="帳號" />
+                        <Input required name="password" type="password" placeholder="密碼" />
+                        <button className="flex justify-center border w-full sm:w-1/2 p-2" style={{ backgroundColor: "black", color: "white" }} formAction={handleLogin}>登入</button>
                         <RegisterButton type="google" action={handleGoogleLogin} label="登入" />
                         <RegisterButton type="line" action={handleLineLogin} label="登入" />
                         <Link className="flex justify-center border border-grey-400 w-full sm:w-1/2 p-2" href={"/register"}>註冊</Link>
@@ -37,3 +74,5 @@ export default () => {
         </div>
     )
 }
+
+export default Login;
