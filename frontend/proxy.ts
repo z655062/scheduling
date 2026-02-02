@@ -5,15 +5,16 @@ import type { NextRequest } from "next/server";
 export function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
     console.log("pathname", pathname)
+    console.log("request.cookies", request.cookies)
     const isAuthenticated = request.cookies.has("t");
     console.log(isAuthenticated)
 
-    if (!isAuthenticated && pathname !== "/login") {
-        // Redirect unauthenticated users to the login page
-        return NextResponse.redirect(new URL("/login", request.url));
-    } else if (isAuthenticated && ["/", "/login"].includes(pathname)) {
-        return NextResponse.redirect(new URL('/welcome', request.url))
-    }
+    // if (!isAuthenticated && pathname !== "/login") {
+    //     // Redirect unauthenticated users to the login page
+    //     return NextResponse.redirect(new URL("/login", request.url));
+    // } else if (isAuthenticated && ["/", "/login"].includes(pathname)) {
+    //     return NextResponse.redirect(new URL('/welcome', request.url))
+    // }
 
     return NextResponse.next();
 }

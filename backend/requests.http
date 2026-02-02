@@ -13,10 +13,10 @@ POST {{baseUrl}}/user
 Content-Type: application/json
 
 {
-  "username": "使用者",
+  "username": "admin",
   "is_active": true,
-  "role": "normal",
-  "password": "123"
+  "role": "admin",
+  "password": "admin"
 }
 
 ### PUT /api/user/:id - 更新一個使用者
@@ -39,6 +39,6 @@ POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
-    "username": "更新使用者",
-    "password": "Password123"
+    "username": "admin",
+    "password": "admin"
 }

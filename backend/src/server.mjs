@@ -3,6 +3,7 @@ import express from "express";
 // import cors from 'cors';
 import auth from "./routes/auth.mjs"
 import user from "./routes/user.mjs";
+import admin from "./routes/admin/index.mjs";
 import initializePassport from "./passport.mjs";
 // import cookieParser from 'cookie-parser';
 // server.js
@@ -45,7 +46,7 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', auth);
 app.use('/api/user', user);
-
+app.use("/api/admin", admin);
 // 啟動伺服器
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

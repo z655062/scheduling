@@ -26,7 +26,8 @@
     "passport-line-auth": "^0.2.9",
     "passport-local": "^1.0.0",
     "pg": "^8.16.3",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "sequelize-cli": "^6.6.3"
   },
   "devDependencies": {
     "jest": "^30.2.0",

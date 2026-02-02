@@ -1,14 +1,17 @@
+import 'dotenv/config';
 import express from "express";
 import passport from "passport";
-import db from "../../models/index.js";
-const { User } = db;
-import UserService from "../services/user.mjs";
+
+import expressSession from "express-session";
+import ShiftService from "../../services/shift.mjs";
+import range from "./shiftRange.mjs";
 
 const router = express.Router();
+router.use("/ranges", range);
 
 router.get("/", async (req, res) => {
     try {
-        const users = await UserService.getAllUsers();
+        const users = await ShiftService.getAllUsers();
 
         return res.status(200).json({ users: users });
     } catch (error) {
@@ -20,36 +23,11 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/me",
-    passport.authenticate("jwt", { session: false }),
-    async (req, res) => {
-        try {
-            const userId = req.user.id;
-
-            const userProfile = await UserService.getUserById(userId);
-            console.log(userProfile)
-            if (!userProfile) {
-                return res.status(404).json({
-                    message: "找不到使用者資料。"
-                });
-            }
-
-            // I/O 處理：回傳使用者公開資訊
-            return res.status(200).json(userProfile);
-        } catch (error) {
-            console.error("Error fetching user profile:", error);
-            return res.status(500).json({
-                message: "伺服器內部錯誤"
-            });
-        }
-    }
-);
-
 router.get("/:id", async (req, res) => {
     const { id } = req.params;
 
     try {
-        const user = await UserService.getUserById(id);
+        const user = await ShiftService.getUserById(id);
 
         return res.status(200).json({ user: user });
     } catch (error) {
@@ -59,11 +37,14 @@ router.get("/:id", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    const { username, is_active, role, password } = req.body;
-    const userData = { username, is_active, role, password };
-
+    const { name, start_date, end_date } = req.body;
+    const data = { name, start_date, end_date };
+    // name
+    // start_date
+    // end_date
+    // is_published
     try {
-        const newUser = await UserService.createUser(userData);
+        const newUser = await ShiftService.createShiftRequirement(data);
 
         res.status(200).json(newUser);
     } catch (error) {
@@ -77,7 +58,7 @@ router.put("/:id", async (req, res) => {
         const { username, role, password } = req.body;
         const updateData = { username, role, password };
 
-        const updatedUser = await UserService.updateUser(id, updateData);
+        const updatedUser = await ShiftService.updateUser(id, updateData);
 
         if (!updatedUser) {
             return res.status(404).json({ message: "找不到或沒有資料更新" });
@@ -94,7 +75,7 @@ router.delete("/:id", async (req, res) => {
     try {
         const { id } = req.params;
 
-        const deletedRowCount = await UserService.deleteUser(id);
+        const deletedRowCount = await ShiftService.deleteUser(id);
 
         if (deletedRowCount === 0) {
             return res.status(404).json({ message: "找不到該使用者，刪除失敗" });
@@ -109,5 +90,5 @@ router.delete("/:id", async (req, res) => {
 });
 
 
-// module.exports = router;
+
 export default router;

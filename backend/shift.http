@@ -1,0 +1,43 @@
+# Vscode 安裝 REST Client
+@baseUrl = http://localhost:1746/api/admin
+# @token = {{auth_token}}
+
+### GET /api/shift - 取得所有班表時段
+GET {{baseUrl}}/shift/ranges
+
+### GET /api/shift/:id - 取得單一使用者
+GET {{baseUrl}}/shift/ranges/1
+
+### POST /api/shift/ranges - 建立一個新的排班區間
+POST {{baseUrl}}/shift/ranges
+Content-Type: application/json
+
+{
+  "name": "測試排班",
+  "start_date": "2026-01-01",
+  "end_date": "2026-01-07"
+}
+
+### PUT /api/shift/:id - 更新一個使用者
+PUT {{baseUrl}}/shift/1
+Content-Type: application/json
+
+{
+  "shiftname": "admin",
+  "role": "admin",
+  "password": "admin"
+}
+
+### DELETE /api/shift/:id - 刪除一個使用者
+DELETE {{baseUrl}}/shift/2
+
+
+
+### POST /api/login - 登入
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "shiftname": "admin",
+    "password": "admin"
+}

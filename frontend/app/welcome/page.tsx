@@ -2,8 +2,8 @@ import { cookies } from "next/headers";
 
 async function fetchCurrentUser() {
     const cookieStore = await cookies();
-    const jwtCookie = cookieStore.get('access_token');
-
+    const jwtCookie = cookieStore.get('t');
+    console.log(jwtCookie)
     if (!jwtCookie) {
         return null; // 沒有 Token，視為未登入
     }
@@ -27,13 +27,13 @@ async function fetchCurrentUser() {
 const welcome = async () => {
     async function handleLogout(formData: FormData) {
         "use server";
-        (await cookies()).delete("access_token");
+        (await cookies()).delete("t");
     }
     const user = await fetchCurrentUser();
     console.log("🚀 ~ user:", user)
     return (
         <form>
-            {`Hi ${user.username}`}
+            {`Hi ${user?.username}`}
             <button formAction={handleLogout}>登出</button>
         </form>
     )
