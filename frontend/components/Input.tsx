@@ -6,9 +6,27 @@ type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLI
 // type: "text" | "password"
 // }
 
-export const Input = (props: InputProps) => {
-    return <input
-        className="flex justify-center border border-grey-400 w-full sm:w-1/2 p-2"
-        {...props}
-    />
+interface InputComponentProps {
+    required?: boolean;
+    disabled?: boolean;
+    label?: string;
+    inputProps: InputProps;
+}
+
+export const Input = (props: InputComponentProps) => {
+    const { label, required, disabled, inputProps } = props;
+    return (
+        <div style={{ gap: "1rem" }} className="flex flex-col justify-center w-full sm:w-1/2 p-2">
+            {label &&
+                <span>{label}</span>
+            }
+            <input
+                required={required}
+                disabled={disabled}
+                style={{ outline: "unset" }}
+                className="flex border border-grey-400 p-2 flex-1"
+                {...inputProps}
+            />
+        </div>
+    )
 }
